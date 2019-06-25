@@ -19,3 +19,7 @@ docker-compose的相关使用，还需继续学习。
 书中的相关微服务的介绍，内容详实，需要多读一下。
 
 ##chapter2
+
+两个问题：
+1）在从RestController中返回复合类型的时候（在本章中为License），第一次启动的时候报错，Spring Boot Application: No converter found for return value of type。后发现是因为，在pojo中没有定义字段的get和set方法。
+2）书中的示例代码依赖的是spring boot的1.4.4版本，较早。在当前的spring boot版本中actuator的health终端地址变更为了/actuator/health。
