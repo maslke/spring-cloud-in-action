@@ -57,3 +57,11 @@ management.endpoints.web.exposure.exclude
 
 解决的方法是在配置中新增了spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 
+在使用基于git配置的时候，由于缺乏认知，在修改为git方式的时候，没有删除配置文件中的profile相关内容，导致一直不能成功加载。
+
+关于@RefreshScope
+
+暴露的终端/refresh，现在同info、health等都一样，在/actuator之下，并且需要配置。
+
+
+
