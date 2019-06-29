@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author:maslke
@@ -16,12 +17,58 @@ public class License {
     @Id
     @Column(name = "license_id", nullable = false)
     private String licenseId;
+
+    @Column(name = "organization_id", nullable = false)
+    private String organizationId;
+
+    @Transient
+    private String organizationName = "";
+
+    @Transient
+    private String contactName = "";
+
+    @Transient
+    private String contactEmail = "";
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    @Transient
+    private String contactPhone = "";
+
     @Column(name = "product_name", nullable = false)
     private String productName;
     @Column(name = "license_type", nullable = false)
     private String licenseType;
-    @Column(name = "organization_id", nullable = false)
-    private String organizationId;
 
     @Column(name = "license_max", nullable = false)
     private Integer licenseMax;
@@ -123,6 +170,26 @@ public class License {
 
     public License withLicenseAllocated(Integer licenseAllocated) {
         this.licenseAllocated = licenseAllocated;
+        return this;
+    }
+
+    public License withOrganizationName(String name) {
+        this.organizationName = name;
+        return this;
+    }
+
+    public License withContactName(String contactName) {
+        this.contactName = contactName;
+        return this;
+    }
+
+    public License withContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+        return this;
+    }
+
+    public License withContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
         return this;
     }
 }

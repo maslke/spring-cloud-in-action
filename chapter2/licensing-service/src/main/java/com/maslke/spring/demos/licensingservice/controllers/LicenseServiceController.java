@@ -23,6 +23,11 @@ public class LicenseServiceController {
     @Autowired
     private LicenseService licenseService;
 
+    @RequestMapping(value = "/{licenseId}/{clientType}")
+    public License getLicenseWithClient(@PathVariable String organizationId, @PathVariable String licenseId, @PathVariable String clientType) {
+        return licenseService.getLicense(organizationId, licenseId, clientType);
+    }
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<License> getLicenses(@PathVariable("organizationId") String organizationId) {

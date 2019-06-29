@@ -1,8 +1,12 @@
+server:
+  port: 8081
+
 management:
   endpoints:
     web:
       exposure:
         include: env,health,info,refresh
+
 eureka:
   instance:
     prefer-ip-address: true
