@@ -1,15 +1,16 @@
 package com.maslke.spring.demos.licensingservice.service;
 
+import com.maslke.spring.demos.licensingservice.clients.OrganizationDiscoveryClient;
 import com.maslke.spring.demos.licensingservice.clients.OrganizationFeignClient;
+import com.maslke.spring.demos.licensingservice.clients.OrganizationRestTemplateClient;
 import com.maslke.spring.demos.licensingservice.model.License;
 import com.maslke.spring.demos.licensingservice.model.Organization;
 import com.maslke.spring.demos.licensingservice.model.ServiceConfig;
 import com.maslke.spring.demos.licensingservice.repository.LicenseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author:maslke
@@ -25,8 +26,15 @@ public class LicenseService {
     @Autowired
     private ServiceConfig serviceConfig;
 
-    @Autowired
+    @Autowired(required = false)
     private OrganizationFeignClient organizationFeignClient;
+
+
+    @Autowired(required = false)
+    private OrganizationDiscoveryClient discoveryClient;
+
+    @Autowired(required = false)
+    private OrganizationRestTemplateClient restTemplateClient;
 
     private Organization retrieveOrgInfo(String organizationId, String clientType) {
         Organization organization = null;
@@ -37,8 +45,10 @@ public class LicenseService {
                 break;
             case "rest":
                 System.out.println("I am using the rest client");
+                organization = restTemplateClient.getOrganization(organizationId);
                 break;
             case "discovery":
+                organization = discoveryClient.getOrganization(organizationId);
                 System.out.println("I am using the discovery client");
         }
         return organization;
