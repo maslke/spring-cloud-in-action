@@ -1,12 +1,10 @@
 server:
   port: 8888
 spring:
-  profiles:
-    active: native
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/maslke/config-repo/
-          search-paths: licensingservice
-
+          uri: https://github.com/maslke/config-repo
+          searchPaths: licensingservice
+          skipSslValidation: true
