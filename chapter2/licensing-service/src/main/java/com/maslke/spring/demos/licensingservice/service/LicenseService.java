@@ -33,8 +33,8 @@ public class LicenseService {
         return license;
     }
 
-    public void save(License license) {
+    public License save(License license) {
         license.withLicenseId(UUID.randomUUID().toString());
-        licenseRepository.save(license);
+        return licenseRepository.save(license);
     }
 }

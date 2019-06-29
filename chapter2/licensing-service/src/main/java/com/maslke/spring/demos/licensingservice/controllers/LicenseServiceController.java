@@ -1,15 +1,15 @@
 package com.maslke.spring.demos.licensingservice.controllers;
 
 import com.maslke.spring.demos.licensingservice.model.License;
-import com.maslke.spring.demos.licensingservice.model.ServiceConfig;
 import com.maslke.spring.demos.licensingservice.service.LicenseService;
-import java.util.List;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author:maslke
@@ -37,5 +37,11 @@ public class LicenseServiceController {
     @RequestMapping(value = "/{licenseId}", method = RequestMethod.GET)
     public License getLicense(@PathVariable String organizationId, @PathVariable String licenseId) {
         return licenseService.getLicense(organizationId, licenseId);
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public License addLicense(@RequestBody License license, @PathVariable String organizationId) {
+        license.setOrganizationId(organizationId);
+        return licenseService.save(license);
     }
 }
