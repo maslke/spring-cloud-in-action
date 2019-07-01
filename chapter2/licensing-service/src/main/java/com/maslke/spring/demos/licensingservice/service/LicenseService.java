@@ -7,10 +7,15 @@ import com.maslke.spring.demos.licensingservice.model.License;
 import com.maslke.spring.demos.licensingservice.model.Organization;
 import com.maslke.spring.demos.licensingservice.model.ServiceConfig;
 import com.maslke.spring.demos.licensingservice.repository.LicenseRepository;
-import java.util.List;
-import java.util.UUID;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * @author:maslke
@@ -50,11 +55,43 @@ public class LicenseService {
             case "discovery":
                 organization = discoveryClient.getOrganization(organizationId);
                 System.out.println("I am using the discovery client");
+                break;
+            default:
+                break;
         }
         return organization;
     }
 
+    private void randomlyRunLong() {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((3 - 1) + 1) + 1;
+        if (randomNum == 3) {
+            sleep();
+        }
+    }
+
+    private void sleep() {
+        try {
+            Thread.sleep(30000);
+        }
+        catch (InterruptedException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    private List<License> buildFallbackLicenseList(String organizationId) {
+        List<License> fallbackList = new ArrayList<>();
+        License license = new License().withLicenseId("000000-00-00000")
+                .withOrganizationId(organizationId)
+                .withProductName("sorry no licensing information currentyly available");
+        fallbackList.add(license);
+        return fallbackList;
+    }
+
+    @HystrixCommand(fallbackMethod = "buildFallbackLicenseList",
+            commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")})
     public List<License> getLicenses(String organizationId) {
+        randomlyRunLong();
         return licenseRepository.findByOrganizationId(organizationId);
     }
 
