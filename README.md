@@ -63,5 +63,18 @@ management.endpoints.web.exposure.exclude
 
 暴露的终端/refresh，现在同info、health等都一样，在/actuator之下，并且需要配置。
 
+在将配置信息将加密解密的时候，需要遵旨ENCRYPT_KEY的环境变量。或者是在bootstrap.yml中配置encrypt.key节点。
 
+配置spring.cloud.config.server.git.uri的时候，测试发现需要输入的是带有git后缀的地址。
 
+在server端的配置中，如果是加密的信息，需要在加密的字符串前面添加"{cipher}"字符。
+
+##chapter4
+
+开始使用服务发现配置 
+
+spring-cloud-starter-netflix-eureka-server和spring-cloud-starter-netflix-eureka-client
+
+有一点需要注意的是，在server端启动后，默认的终端地址是 http://localhost:7061。
+
+但是在client端配置的时候，配置eureka.client.service-url.default-zone需要配置的地址是http://localhost:7061/eureka，而且访问apps列表的终端地址也是http://localhost:7061/eureka/apps。
