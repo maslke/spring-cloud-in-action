@@ -7,8 +7,11 @@ import com.maslke.spring.demos.licensingservice.model.License;
 import com.maslke.spring.demos.licensingservice.model.Organization;
 import com.maslke.spring.demos.licensingservice.model.ServiceConfig;
 import com.maslke.spring.demos.licensingservice.repository.LicenseRepository;
+import com.maslke.spring.demos.licensingservice.utils.UserContextHolder;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,8 @@ import java.util.UUID;
  */
 @Service
 public class LicenseService {
+
+    private static final Logger logger = LoggerFactory.getLogger(LicenseService.class);
 
     @Autowired
     private LicenseRepository licenseRepository;
@@ -88,10 +93,13 @@ public class LicenseService {
         return fallbackList;
     }
 
-    @HystrixCommand(fallbackMethod = "buildFallbackLicenseList",
+    @HystrixCommand(threadPoolKey = "getLicensesByOrgThreadPool",
+            threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "30"), @HystrixProperty(name = "maxQueueSize", value = "10") },
+            fallbackMethod = "buildFallbackLicenseList",
             commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")})
     public List<License> getLicenses(String organizationId) {
         randomlyRunLong();
+        logger.debug("LicenseService Correlation id : {}", UserContextHolder.getContext().getCorrelationId());
         return licenseRepository.findByOrganizationId(organizationId);
     }
 

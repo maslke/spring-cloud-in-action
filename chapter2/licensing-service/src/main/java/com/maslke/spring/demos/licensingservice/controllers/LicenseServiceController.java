@@ -2,6 +2,9 @@ package com.maslke.spring.demos.licensingservice.controllers;
 
 import com.maslke.spring.demos.licensingservice.model.License;
 import com.maslke.spring.demos.licensingservice.service.LicenseService;
+import com.maslke.spring.demos.licensingservice.utils.UserContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +23,8 @@ import java.util.List;
 @RequestMapping("/v1/organizations/{organizationId}/licenses")
 public class LicenseServiceController {
 
+    private final static Logger logger = LoggerFactory.getLogger(LicenseServiceController.class);
+
     @Autowired
     private LicenseService licenseService;
 
@@ -31,6 +36,7 @@ public class LicenseServiceController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<License> getLicenses(@PathVariable("organizationId") String organizationId) {
+        logger.debug("LicenseServiceController Correlation id : {}", UserContextHolder.getContext().getCorrelationId());
         return licenseService.getLicenses(organizationId);
     }
 
