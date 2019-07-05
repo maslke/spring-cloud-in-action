@@ -9,3 +9,17 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 server:
   port: 5555
+spring:
+  application:
+    name: zuulsvr
+
+
+zuul:
+  routes:
+    licensestatic:
+      path: /licensestatic/**
+      url: http://localhost:8080
+    licensingservice: /licensing/**
+    organizationservice: /organization/**
+  ignored-services: '*'
+  prefix: /api
