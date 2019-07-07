@@ -78,3 +78,12 @@ spring-cloud-starter-netflix-eureka-server和spring-cloud-starter-netflix-eureka
 有一点需要注意的是，在server端启动后，默认的终端地址是 http://localhost:7061。
 
 但是在client端配置的时候，配置eureka.client.service-url.default-zone需要配置的地址是http://localhost:7061/eureka，而且访问apps列表的终端地址也是http://localhost:7061/eureka/apps。
+
+chapter5
+
+关于hystrix的相关。
+
+
+chapter6
+
+关于zuul的端点refresh和routes也迁移到了actuator/routes、acutator/refresh下面，同样需要在配置文件中启用。

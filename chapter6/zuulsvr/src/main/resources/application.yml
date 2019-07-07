@@ -11,15 +11,11 @@ server:
   port: 5555
 spring:
   application:
-    name: zuulsvr
+    name: zuulservice
 
 
-zuul:
-  routes:
-    licensestatic:
-      path: /licensestatic/**
-      url: http://localhost:8080
-    licensingservice: /licensing/**
-    organizationservice: /organization/**
-  ignored-services: '*'
-  prefix: /api
+management:
+  endpoints:
+    web:
+      exposure:
+        include: env,health,info,refresh,routes
