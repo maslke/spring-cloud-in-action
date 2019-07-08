@@ -1,7 +1,5 @@
-package com.maslke.spring.demos.zuulsvr.filters;
+package com.maslke.spring.demos.zuulsvr.utils;
 
-import com.maslke.spring.demos.zuulsvr.utils.UserContext;
-import com.maslke.spring.demos.zuulsvr.utils.UserContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +24,9 @@ public class UserContextFilter implements Filter {
         UserContextHolder.getContext().setUserId(httpServletRequest.getHeader(UserContext.USER_ID));
         UserContextHolder.getContext().setAuthToken(httpServletRequest.getHeader(UserContext.AUTH_TOKEN));
         UserContextHolder.getContext().setOrgId(httpServletRequest.getHeader(UserContext.ORG_ID));
+
+        logger.debug("Special Routes Service Incoming Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
