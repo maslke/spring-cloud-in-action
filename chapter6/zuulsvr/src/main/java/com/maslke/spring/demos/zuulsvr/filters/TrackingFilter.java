@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TrackingFilter extends ZuulFilter {
 
     private static final int FILTER_ORDER = 1;

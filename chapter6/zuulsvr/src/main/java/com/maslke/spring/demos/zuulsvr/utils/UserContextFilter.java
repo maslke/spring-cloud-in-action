@@ -11,7 +11,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserContextFilter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(UserContextFilter.class);
