@@ -1,0 +1,24 @@
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://localhost:7061/eureka
+
+encrypt:
+  key: IMSYMMETRIC
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,refresh
+
+logging:
+  level:
+    com.netflix: warn
+    org.springframework.web: warn
+    com.maslke.spring: debug
