@@ -14,6 +14,7 @@ spring:
     name: zuulservice
 
 
+
 management:
   endpoints:
     web:
@@ -26,3 +27,5 @@ logging:
     com.netflix: WARN
     org.springframework.web: WARN
     com.maslke: DEBUG
+zuul:
+  sensitive-headers: Cookie,Set-Cookie

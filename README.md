@@ -87,3 +87,12 @@ chapter5
 chapter6
 
 关于zuul的端点refresh和routes也迁移到了actuator/routes、acutator/refresh下面，同样需要在配置文件中启用。
+
+
+chapter7
+
+两个依赖的坐标已经调整为spring-cloud-starter-security和spring-cloud-starter-security-oauth2。
+
+书中的代码示例较早，在当前的办法中，设置密码的时候，需要添加前缀{noop}，表示密码字符串没有编码和加密。
+
+逻辑在DelegatingPasswordEncoder中。
