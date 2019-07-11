@@ -1,7 +1,7 @@
-package com.maslke.spring.demos.organizationservice.controllers;
+package com.maslke.spring.demos.orgservicenew.controllers;
 
-import com.maslke.spring.demos.organizationservice.model.Organization;
-import com.maslke.spring.demos.organizationservice.services.OrganizationService;
+import com.maslke.spring.demos.orgservicenew.services.OrganizationService;
+import com.maslke.spring.demos.orgservicenew.model.Organization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class OrganizationServiceController {
     public Organization getOrganization(@PathVariable String organizationId) {
         logger.info("Looking up data for org {}", organizationId);
         Organization org = organizationService.getOrg(organizationId);
-        org.setContactName("OLD::" + org.getContactName());
+        org.setContactName("NEW::" + org.getContactName());
         return org;
     }
 
