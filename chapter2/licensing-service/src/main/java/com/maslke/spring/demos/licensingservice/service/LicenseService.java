@@ -1,5 +1,6 @@
 package com.maslke.spring.demos.licensingservice.service;
 
+import com.maslke.spring.demos.licensingservice.clients.OAuth2RestTemplateClient;
 import com.maslke.spring.demos.licensingservice.clients.OrganizationDiscoveryClient;
 import com.maslke.spring.demos.licensingservice.clients.OrganizationFeignClient;
 import com.maslke.spring.demos.licensingservice.clients.OrganizationRestTemplateClient;
@@ -10,15 +11,14 @@ import com.maslke.spring.demos.licensingservice.repository.LicenseRepository;
 import com.maslke.spring.demos.licensingservice.utils.UserContextHolder;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author:maslke
@@ -46,8 +46,12 @@ public class LicenseService {
     @Autowired(required = false)
     private OrganizationRestTemplateClient restTemplateClient;
 
+    @Autowired(required = false)
+    private OAuth2RestTemplateClient oAuth2RestTemplateClient;
+
     private Organization retrieveOrgInfo(String organizationId, String clientType) {
         Organization organization = null;
+        logger.info("reteieveOrgInfo:{}", organizationId);
         switch (clientType) {
             case "feign":
                 System.out.println("I am using the feign client");
@@ -61,6 +65,9 @@ public class LicenseService {
                 organization = discoveryClient.getOrganization(organizationId);
                 System.out.println("I am using the discovery client");
                 break;
+            case "oauth2":
+                organization = oAuth2RestTemplateClient.getOrganization(organizationId);
+                System.out.println("I am using the oauth2 client");
             default:
                 break;
         }
@@ -94,7 +101,7 @@ public class LicenseService {
     }
 
     @HystrixCommand(threadPoolKey = "getLicensesByOrgThreadPool",
-            threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "30"), @HystrixProperty(name = "maxQueueSize", value = "10") },
+            threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "30"), @HystrixProperty(name = "maxQueueSize", value = "10")},
             fallbackMethod = "buildFallbackLicenseList",
             commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")})
     public List<License> getLicenses(String organizationId) {
@@ -115,12 +122,14 @@ public class LicenseService {
     }
 
     public License getLicense(String organizationId, String licenseId, String clientType) {
+        logger.info("licensing service: getLiense");
         License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
-        Organization organization = retrieveOrgInfo(organizationId, clientType);
-        return license.withOrganizationName(organization.getName())
-                .withContactEmail(organization.getContactEmail())
-                .withContactName(organization.getContactName())
-                .withContactPhone(organization.getContactPhone());
+        return license;
+//        Organization organization = retrieveOrgInfo(organizationId, clientType);
+//        return license.withOrganizationName(organization.getName())
+//                .withContactEmail(organization.getContactEmail())
+//                .withContactName(organization.getContactName())
+//                .withContactPhone(organization.getContactPhone());
 
     }
 
