@@ -1,8 +1,18 @@
-encrypt:
-  key: IMSYMMETRIC
+server:
+  port: 8888
 spring:
+  profiles:
+    active: native
   cloud:
     config:
       server:
+        # git:
+        #          uri: https://github.com/maslke/config-repo
+        #          searchPaths: licensingservice,organizationservice,zuulservice,specialroutesservice,orgservice-new
+        #          skipSslValidation: true
+        native:
+          search-locations: classpath:/config/licensingservice
         encrypt:
-          enabled: false
+          enabled: false # 设置为false，禁用了服务器端的属性解密。要求客户端执行解密操作，需要spring-security-rsa这个jar
+encrypt:
+  key: IMSYMMETRIC

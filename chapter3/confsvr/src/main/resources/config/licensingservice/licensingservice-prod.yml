@@ -1,3 +1,4 @@
+example.property2: "I AM IN PRODUCT"
 spring.jpa.database: "POSTGRESQL"
 spring.datasource.platform:  "postgres"
 spring.jpa.show-sql: "false"

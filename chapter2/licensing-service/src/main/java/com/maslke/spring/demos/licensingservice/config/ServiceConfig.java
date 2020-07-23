@@ -1,13 +1,8 @@
-package com.maslke.spring.demos.licensingservice.model;
+package com.maslke.spring.demos.licensingservice.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-/**
- * @author:maslke
- * @date:2019/6/26
- * @version:0.0.1
- */
 @Component
 public class ServiceConfig {
 
@@ -15,6 +10,6 @@ public class ServiceConfig {
     private String exampleProperty;
 
     public String getExampleProperty() {
-        return exampleProperty;
+        return this.exampleProperty;
     }
 }

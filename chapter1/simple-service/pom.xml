@@ -2,6 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!-- 引入了spring-boot-starter-parent 因此无需再引入spring bom的相关配置。-->
+    <!-- 不过，多数情况下，我们的项目会有自己的parent(多模块项目），所以使用bom的方式来引入自行定义的parent是更常规的做法 -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
