@@ -1,4 +1,4 @@
-package com.maslke.spring.demos.organizationservice.model;
+package com.maslke.spring.demos.licensingservice.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

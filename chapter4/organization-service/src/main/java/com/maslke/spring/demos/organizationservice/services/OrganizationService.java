@@ -10,8 +10,13 @@ import java.util.UUID;
 
 @Service
 public class OrganizationService {
-    @Autowired
+
     private OrganizationRepository organizationRepository;
+
+    @Autowired
+    public OrganizationService(OrganizationRepository organizationRepository) {
+        this.organizationRepository = organizationRepository;
+    }
 
     public Organization getOrg(String organizationId) {
         return organizationRepository.findByOrganizationId(organizationId);

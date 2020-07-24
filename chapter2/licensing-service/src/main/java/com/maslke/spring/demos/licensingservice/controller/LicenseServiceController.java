@@ -19,8 +19,15 @@ public class LicenseServiceController {
         this.licenseService = licenseService;
     }
 
+
+
     @GetMapping("/{licenseId}")
     public License getLicense(@PathVariable String organizationId, @PathVariable String licenseId) {
         return licenseService.getLicense(organizationId, licenseId);
+    }
+
+    @GetMapping("/{licenseId}/{clientType}")
+    public License getLicensesWithClient(@PathVariable String organizationId, @PathVariable String licenseId, @PathVariable String clientType) {
+        return licenseService.getLicense(organizationId, licenseId, clientType);
     }
 }
