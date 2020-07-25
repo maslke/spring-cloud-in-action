@@ -13,6 +13,6 @@ spring:
         native:
           search-locations: classpath:/config/licensingservice,classpath:/config/organizationservice
         encrypt:
-          enabled: false # 设置为false，禁用了服务器端的属性解密。要求客户端执行解密操作，需要spring-security-rsa这个jar
+          enabled: true # 设置为false，禁用了服务器端的属性解密。要求客户端执行解密操作，需要spring-security-rsa这个jar
 encrypt:
   key: IMSYMMETRIC

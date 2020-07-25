@@ -1,0 +1,16 @@
+server:
+  port: 8080
+spring:
+    application:
+      name: licensingservice
+    profiles:
+      active: local
+    cloud:
+      nacos:
+        config:
+          server-addr: 127.0.0.1:8848
+          file-extension: yaml
+          group: local
+        discovery:
+          server-addr: 127.0.0.1:8848
+          group: local
