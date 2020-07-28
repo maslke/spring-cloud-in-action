@@ -1,4 +1,4 @@
-package com.maslke.spring.demos.organizationservice.model;
+package com.maslke.spring.demos.licensingservice.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "organizations")
+@Table(name = "organization")
 public class Organization {
 
     public Organization() {

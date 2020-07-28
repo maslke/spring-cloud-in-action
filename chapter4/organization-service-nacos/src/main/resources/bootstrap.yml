@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: organizationservice
+  profiles:
+    active: local  # 如果此处配置的是default，则表示不是启动了名称为“default“的profile，配置了default的话，则读取nacos中的配置信息是在DEFAULT_GROUP分组中
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        group: local
+      config:  # 使用nacos来作为配置中新，代理spring-cloud-config
+        server-addr: 127.0.0.1:8848 # 注意，经过测试，此处配置localhost:8848 不能正常工作
+        file-extension: yaml
+
+encrypt:
+  key: IMSYMMETRIC
+
+
