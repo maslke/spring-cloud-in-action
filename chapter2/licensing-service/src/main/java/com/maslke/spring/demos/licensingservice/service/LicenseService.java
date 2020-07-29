@@ -72,7 +72,12 @@ public class LicenseService {
 
     @HystrixCommand(threadPoolKey = "xxxKey", threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "30"),
             @HystrixProperty(name = "maxQueueSize", value = "10")}, fallbackMethod = "buildFallbackLicenseList",
-            commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "12000")})
+            commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "12000"),
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
+            @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
+            @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")})
     public List<License> getLicensesByOrganization(String organizationId) {
         randomRunLongTime();
         return licenseRepository.findLicenseByOrganizationId(organizationId);
