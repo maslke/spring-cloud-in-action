@@ -7,8 +7,11 @@ import com.maslke.spring.demos.licensingservice.config.ServiceConfig;
 import com.maslke.spring.demos.licensingservice.model.License;
 import com.maslke.spring.demos.licensingservice.model.Organization;
 import com.maslke.spring.demos.licensingservice.repository.LicenseRepository;
+import com.maslke.spring.demos.licensingservice.util.UserContextHolder;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,9 @@ import java.util.UUID;
 
 @Service
 public class LicenseService {
+
+    private static final Logger logger = LoggerFactory.getLogger(LicenseService.class);
+
     private LicenseRepository licenseRepository;
     private ServiceConfig serviceConfig;
 
@@ -79,6 +85,8 @@ public class LicenseService {
             @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
             @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")})
     public List<License> getLicensesByOrganization(String organizationId) {
+        // 获取不到Correlation id,因为隔离在其他的线程组中
+        logger.info("LicenseService Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
         randomRunLongTime();
         return licenseRepository.findLicenseByOrganizationId(organizationId);
     }
