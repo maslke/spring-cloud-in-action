@@ -3,7 +3,21 @@ spring:
     config:
       uri: http://localhost:8888
 
-zuul:
-  prefix:  /api
-  routes:
-    organizationservice: /organization/**
+#zuul:
+#  prefix:  /api
+#  routes:
+#    licensestatic:
+#      path: /licensestatic/**
+#      url: http://localhost:8081
+#    organizationservice: /organization/**, # 表示原本的路由路径中的organizationservice-> organization
+#    licensingservice: /license/**
+#  ignored-services: organizationservice,licensingservice
+
+#ribbon:
+#  eureka:
+#    enabled: false
+## 此处配置不成功，原因不明
+#licensestatic:
+#  ribbon:
+#    listOfServers: http://localhost:8081,http://localhost:8082
+

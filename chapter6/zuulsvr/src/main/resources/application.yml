@@ -1,4 +1,3 @@
-
 eureka:
   instance:
     prefer-ip-address: true
@@ -10,6 +9,8 @@ eureka:
 server:
   port: 5555
 spring:
+  profiles:
+    active: default
   application:
     name: zuulservice
 

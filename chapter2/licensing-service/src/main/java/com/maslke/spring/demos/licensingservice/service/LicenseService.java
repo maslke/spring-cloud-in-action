@@ -92,8 +92,8 @@ public class LicenseService {
     }
 
     private void randomRunLongTime() {
-        int ran = random.nextInt(10);
-        if (ran <= 5) {
+        int randomNum = random.nextInt((3 - 1) + 1) + 1;
+        if (randomNum == 3) {
             try {
                 Thread.sleep(15000);
             }
