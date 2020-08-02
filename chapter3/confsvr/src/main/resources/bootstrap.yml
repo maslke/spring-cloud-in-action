@@ -11,7 +11,7 @@ spring:
         #          searchPaths: licensingservice,organizationservice,zuulservice,specialroutesservice,orgservice-new
         #          skipSslValidation: true
         native:
-          search-locations: classpath:/config/licensingservice,classpath:/config/organizationservice, classpath:/config/zuulService, classpath:/config/specialroutesservice
+          search-locations: classpath:/config/licensingservice,classpath:/config/organizationservice, classpath:/config/zuulService, classpath:/config/specialroutesservice, classpath:/config/authenticationservice
           # 如果是基本文件夹路径的配置中心的话，如上的写法需要把每一个文件都添加上去，后续需要尝试一下是否支持基于模糊匹配的。 AntPattern
         encrypt:
           enabled: true # 设置为false，禁用了服务器端的属性解密。要求客户端执行解密操作，需要spring-security-rsa这个jar
