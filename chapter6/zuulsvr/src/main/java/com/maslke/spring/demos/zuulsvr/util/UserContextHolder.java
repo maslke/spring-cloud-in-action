@@ -1,4 +1,4 @@
-package com.maslke.spring.demos.zuulsvr.filter;
+package com.maslke.spring.demos.zuulsvr.util;
 
 import org.springframework.util.Assert;
 

@@ -1,0 +1,21 @@
+server:
+  port: 8087
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:8901/auth/user
+management:
+  endpoints:
+    web:
+      exposure:
+        include: env,health,info,refresh
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      default-zone: http://localhost:8761/eureka

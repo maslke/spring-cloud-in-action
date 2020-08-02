@@ -1,5 +1,6 @@
 package com.maslke.spring.demos.licensingservice.service;
 
+import com.maslke.spring.demos.licensingservice.client.OrganizationAuthClient;
 import com.maslke.spring.demos.licensingservice.client.OrganizationDiscoveryClient;
 import com.maslke.spring.demos.licensingservice.client.OrganizationFeignClient;
 import com.maslke.spring.demos.licensingservice.client.OrganizationRestClient;
@@ -32,18 +33,21 @@ public class LicenseService {
     private OrganizationRestClient restClient;
     private OrganizationFeignClient feignClient;
 
+    private OrganizationAuthClient oauthClient;
+
     private final Random random = new Random();
 
 
     @Autowired
     public LicenseService(LicenseRepository repository, ServiceConfig serviceConfig,
                           OrganizationDiscoveryClient discoveryClient, OrganizationRestClient restClient,
-                          OrganizationFeignClient feignClient) {
+                          OrganizationFeignClient feignClient, OrganizationAuthClient authClient) {
         this.licenseRepository = repository;
         this.serviceConfig = serviceConfig;
         this.discoveryClient = discoveryClient;
         this.restClient = restClient;
         this.feignClient = feignClient;
+        this.oauthClient = authClient;
     }
 
     public License getLicense(String organizationId, String licenseId, String clientType) {
@@ -66,7 +70,9 @@ public class LicenseService {
         else if ("feign".equals(clientType)) {
             return this.feignClient.getOrganizationById(organizationId);
         }
-        else {
+        else if ("oauth".equals(clientType)) {
+            return this.oauthClient.getOrganization(organizationId);
+        } else {
             return new Organization();
         }
     }

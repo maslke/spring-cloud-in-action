@@ -1,4 +1,4 @@
-package com.maslke.spring.demos.zuulsvr.filter;
+package com.maslke.spring.demos.zuulsvr.util;
 
 // UserContext\UserContextFilter\UserContextHolder三个类和在licensingservice类中的代码基本一致。
 // 在微服务结构中，尽量避免代码层面的共享。虽然是可以通过增加一层依赖来进行处理，但在微服务架构中一般不采用这种方式。

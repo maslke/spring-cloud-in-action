@@ -1,4 +1,4 @@
-package com.maslke.spring.demos.zuulsvr.filter;
+package com.maslke.spring.demos.zuulsvr.util;
 
 import com.netflix.zuul.context.RequestContext;
 import org.springframework.stereotype.Component;
@@ -8,9 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class FilterUtils {
 
-    public static final String PRE_FILTER_TYPE = "";
+    public static final String PRE_FILTER_TYPE = "pre";
+    public static final String POST_FILTER_TYPE = "post";
+    public static final String ROUTE_FILTER_TYPE = "route";
 
     public static final String TMX_CORRELATION_ID = "tmx-correlation-id";
+
+    public String getServiceId() {
+        RequestContext requestContext = RequestContext.getCurrentContext();
+        if (requestContext.get("serviceId") == null) {
+            return "";
+        }
+        return requestContext.get("serviceId").toString();
+    }
 
     public String getCorrelationId() {
         RequestContext context = RequestContext.getCurrentContext();

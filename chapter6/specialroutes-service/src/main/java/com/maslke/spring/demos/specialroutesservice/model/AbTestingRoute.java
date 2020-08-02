@@ -6,9 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * @author:maslke
- * @date:2019/7/9
- * @version:0.0.1
+ * @author maslke
  */
 @Entity
 @Table(name = "abtesting")

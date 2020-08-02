@@ -1,11 +1,12 @@
 package com.maslke.spring.demos.licensingservice.util;
 
 public class UserContext {
-
-    public static final String CORRELATION_ID = "CORRELATION_ID";
-    public static final String USER_ID = "USER_ID";
-    public static final String AUTH_TOKEN = "AUTH_TOKEN";
-    public static final String ORG_ID = "ORG_ID";
+    // 根据zuulservice的那一章节中的设定
+    public static final String CORRELATION_ID = "tmx-correlation-id";
+    public static final String USER_ID = "tmx-user-id";
+    public static final String AUTH_TOKEN = "tmx-auth-token";
+    public static final String ORG_ID = "tmx-org-id";
+    public static final String AUTHORIZATION = "Authorization";
 
     private String correlationId;
 
@@ -14,6 +15,8 @@ public class UserContext {
     private String authToken;
 
     private String orgId;
+
+    private String authorization;
 
     public UserContext() {
     }
@@ -48,5 +51,13 @@ public class UserContext {
 
     public void setOrgId(String orgId) {
         this.orgId = orgId;
+    }
+
+    public String getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(String authorization) {
+        this.authorization = authorization;
     }
 }

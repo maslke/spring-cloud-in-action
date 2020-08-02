@@ -1,15 +1,17 @@
 package com.maslke.spring.demos.zuulsvr.filter;
 
+import com.maslke.spring.demos.zuulsvr.util.FilterUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
+@Component
 public class TrackingFilter extends ZuulFilter { // 覆盖ZuulFilter的某些方法
 
     private static final int FILTER_ORDER = 1;
@@ -25,6 +27,9 @@ public class TrackingFilter extends ZuulFilter { // 覆盖ZuulFilter的某些方
         this.filterUtils = filterUtils;
     }
 
+    // 关于filter_type
+    // 并不能随意的定义，在zuul中定义了四种，分别为pre\post\route\error
+    // 如果自行定义了filter type，且不在以上四种类型之内的，则ZuulFilter并不会注入到请求的调用中
     @Override
     public String filterType() {
         return FilterUtils.PRE_FILTER_TYPE;

@@ -7,15 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author:maslke
- * @date:2019/7/9
- * @version:0.0.1
+ * @author maslke
  */
 @Service
 public class AbTestingRouteService {
 
-    @Autowired
     private AbTestingRouteRepository repository;
+
+    @Autowired
+    public AbTestingRouteService(AbTestingRouteRepository repository) {
+        this.repository = repository;
+    }
 
     public AbTestingRoute getRoute(String serviceName) {
         AbTestingRoute route = repository.findByServiceName(serviceName);
