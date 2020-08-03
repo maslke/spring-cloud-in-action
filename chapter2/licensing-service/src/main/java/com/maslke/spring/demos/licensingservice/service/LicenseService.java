@@ -79,7 +79,7 @@ public class LicenseService {
 
     public License getLicense(String organizationId, String licenseId) {
         License license = licenseRepository.findByOrOrganizationIdAndLicenseId(organizationId, licenseId);
-        return license.withComment(serviceConfig.getExampleProperty());
+        return license.withComment(serviceConfig.getJwtSigningKey());
     }
 
     @HystrixCommand(threadPoolKey = "xxxKey", threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "30"),

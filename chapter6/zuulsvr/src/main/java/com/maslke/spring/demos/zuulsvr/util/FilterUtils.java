@@ -1,7 +1,10 @@
 package com.maslke.spring.demos.zuulsvr.util;
 
 import com.netflix.zuul.context.RequestContext;
+import org.apache.http.auth.AUTH;
+import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +16,7 @@ public class FilterUtils {
     public static final String ROUTE_FILTER_TYPE = "route";
 
     public static final String TMX_CORRELATION_ID = "tmx-correlation-id";
+    public static final String AUTHORIZATION = "Authorization";
 
     public String getServiceId() {
         RequestContext requestContext = RequestContext.getCurrentContext();
@@ -39,5 +43,19 @@ public class FilterUtils {
         RequestContext context = RequestContext.getCurrentContext();
         // 将关联ID添加到Zuul的Request Header中。
         context.addZuulRequestHeader(TMX_CORRELATION_ID, generateCorrelationId);
+    }
+
+    public void setAuthorization(String authorization) {
+        RequestContext requestContext = RequestContext.getCurrentContext();
+        requestContext.addZuulRequestHeader(AUTHORIZATION, authorization);
+    }
+
+    public String getAuthorization() {
+        RequestContext requestContext = RequestContext.getCurrentContext();
+        HttpServletRequest request = requestContext.getRequest();
+        if (request.getHeader(AUTHORIZATION) != null) {
+            return request.getHeader(AUTHORIZATION);
+        }
+        return requestContext.getZuulRequestHeaders().get(AUTHORIZATION);
     }
 }

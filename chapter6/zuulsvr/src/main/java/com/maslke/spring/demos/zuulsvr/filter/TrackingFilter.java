@@ -1,14 +1,18 @@
 package com.maslke.spring.demos.zuulsvr.filter;
 
+import com.maslke.spring.demos.zuulsvr.config.ServiceConfig;
 import com.maslke.spring.demos.zuulsvr.util.FilterUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Component
@@ -22,9 +26,12 @@ public class TrackingFilter extends ZuulFilter { // 覆盖ZuulFilter的某些方
 
     private FilterUtils filterUtils;
 
+    private ServiceConfig serviceConfig;
+
     @Autowired
-    public TrackingFilter(FilterUtils filterUtils) {
+    public TrackingFilter(FilterUtils filterUtils, ServiceConfig serviceConfig) {
         this.filterUtils = filterUtils;
+        this.serviceConfig = serviceConfig;
     }
 
     // 关于filter_type
@@ -55,6 +62,7 @@ public class TrackingFilter extends ZuulFilter { // 覆盖ZuulFilter的某些方
 
     @Override
     public Object run() throws ZuulException {
+        logger.info("ORGANIZATIONID:{}", getOrganizationId());
         if (isCorrelationIdPresent()) {
             logger.debug("tmx-correlation-id found in tracking filter: {}", filterUtils.getCorrelationId());
         } else {
@@ -65,5 +73,21 @@ public class TrackingFilter extends ZuulFilter { // 覆盖ZuulFilter的某些方
         RequestContext context = RequestContext.getCurrentContext();
         logger.debug("Processing incoming request for {}", context.getRequest().getRequestURI());
         return null;
+    }
+
+    private String getOrganizationId() {
+        String orgId = "";
+        if (filterUtils.getAuthorization() != null) {
+            String authorization = filterUtils.getAuthorization().replace("Bearer", "");
+            try {
+                Claims claims = Jwts.parser().setSigningKey(serviceConfig.getJwtSigningKey().getBytes(StandardCharsets.UTF_8))
+                        .parseClaimsJws(authorization)
+                        .getBody();
+                orgId = claims.get("organizationId").toString();
+            } catch (Exception ex) {
+                logger.error(ex.getMessage(), ex);
+            }
+        }
+        return orgId;
     }
 }

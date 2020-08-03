@@ -1,4 +1,4 @@
-package com.maslke.spring.demos.licensingservice.config;
+package com.maslke.spring.demos.zuulsvr.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

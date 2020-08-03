@@ -45,7 +45,7 @@ import java.util.Random;
 public class SpecialRoutesFilter extends ZuulFilter {
 
     private static final Integer FILTER_ORDER = 2;
-    private static final Boolean SHOULD_FILTER = true;
+    private static final Boolean SHOULD_FILTER = false;
 
     private static final Logger logger = LoggerFactory.getLogger(SpecialRoutesFilter.class);
 

@@ -35,22 +35,22 @@ public class Application implements ApplicationRunner, CommandLineRunner {
 
     // 在organizationservice调用需要Authorization Header的时候，要想将licensingservice的Authorization Header传递到调用organizationservice中
     // 同样可以使用UserContext的方式
-//    @LoadBalanced
-//    @Bean
-//    public RestTemplate getRestTemplate() {
-//        RestTemplate restTemplate = new RestTemplate();
-//        // 去除自定义的拦截器之后，使用rest 客户端来进行调用，将无法正常调用organizationservice，因为没有传递Authorization Header过去
-//        // 用来和使用OAuth2RestTemplate的方式进行对比
-//        // restTemplate.getInterceptors().add(new UserContextInterceptor());
-//        return restTemplate;
-//    }
-
-    @Bean
     @LoadBalanced
-    public OAuth2RestTemplate oAuth2RestTemplate(OAuth2ClientContext oAuth2ClientContext,
-                                                 OAuth2ProtectedResourceDetails details) {
-        return new OAuth2RestTemplate(details, oAuth2ClientContext);
+    @Bean
+    public RestTemplate getRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        // 去除自定义的拦截器之后，使用rest 客户端来进行调用，将无法正常调用organizationservice，因为没有传递Authorization Header过去
+        // 用来和使用OAuth2RestTemplate的方式进行对比
+         restTemplate.getInterceptors().add(new UserContextInterceptor());
+        return restTemplate;
     }
+
+//    @Bean
+//    @LoadBalanced
+//    public OAuth2RestTemplate oAuth2RestTemplate(OAuth2ClientContext oAuth2ClientContext,
+//                                                 OAuth2ProtectedResourceDetails details) {
+//        return new OAuth2RestTemplate(details, oAuth2ClientContext);
+//    }
 
     @Override
     public void run(String... args) throws Exception {
