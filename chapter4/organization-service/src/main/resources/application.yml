@@ -3,8 +3,11 @@ server:
 
 security:
   oauth2:
+    client:
+      client-id: eagleeye
     resource:
       user-info-uri: http://localhost:8901/auth/user
+
 
 management:
   endpoints:

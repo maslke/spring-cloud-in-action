@@ -1,6 +1,10 @@
 package com.maslke.spring.demos.licensingservice;
 
+import com.maslke.spring.demos.licensingservice.model.Organization;
+import com.maslke.spring.demos.licensingservice.model.OrganizationChangeModel;
 import com.maslke.spring.demos.licensingservice.util.UserContextInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +15,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
@@ -28,7 +35,12 @@ import java.util.Set;
 @EnableCircuitBreaker
 @EnableFeignClients
 @EnableResourceServer
+@EnableBinding(Sink.class)
 public class Application implements ApplicationRunner, CommandLineRunner {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -51,6 +63,12 @@ public class Application implements ApplicationRunner, CommandLineRunner {
 //                                                 OAuth2ProtectedResourceDetails details) {
 //        return new OAuth2RestTemplate(details, oAuth2ClientContext);
 //    }
+
+
+    @StreamListener(Sink.INPUT)
+    public void listener(OrganizationChangeModel model) {
+        logger.info("Organization {} has changed:{}", model.getOrganizationId(), model.getActionName());
+    }
 
     @Override
     public void run(String... args) throws Exception {

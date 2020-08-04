@@ -16,6 +16,14 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        input:
+          destination: stream-topic
+
 eureka:
   instance:
     prefer-ip-address: true
