@@ -21,7 +21,7 @@ spring:
         binder:
           brokers: localhost:9092
       bindings:
-        input:
+        inOrgChange:
           destination: stream-topic
 
 eureka:

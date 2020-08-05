@@ -10,8 +10,22 @@ public class ServiceConfig {
     @Value("${signing.key}")
     private String jwtSigningKey = "";
 
+    @Value("${redis.server}")
+    private String redisServer;
+
+    @Value("${redis.port}")
+    private Integer redisPort;
+
     public String getJwtSigningKey() {
         return jwtSigningKey;
+    }
+
+    public String getRedisServer() {
+        return this.redisServer;
+    }
+
+    public int getRedisPort() {
+        return this.redisPort;
     }
 }
 

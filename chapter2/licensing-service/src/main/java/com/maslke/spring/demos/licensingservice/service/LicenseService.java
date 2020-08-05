@@ -3,6 +3,7 @@ package com.maslke.spring.demos.licensingservice.service;
 import com.maslke.spring.demos.licensingservice.client.OrganizationAuthClient;
 import com.maslke.spring.demos.licensingservice.client.OrganizationDiscoveryClient;
 import com.maslke.spring.demos.licensingservice.client.OrganizationFeignClient;
+import com.maslke.spring.demos.licensingservice.client.OrganizationRedisClient;
 import com.maslke.spring.demos.licensingservice.client.OrganizationRestClient;
 import com.maslke.spring.demos.licensingservice.config.ServiceConfig;
 import com.maslke.spring.demos.licensingservice.model.License;
@@ -32,6 +33,7 @@ public class LicenseService {
     private OrganizationDiscoveryClient discoveryClient;
     private OrganizationRestClient restClient;
     private OrganizationFeignClient feignClient;
+    private OrganizationRedisClient redisClient;
 
     private OrganizationAuthClient oauthClient;
 
@@ -41,13 +43,14 @@ public class LicenseService {
     @Autowired
     public LicenseService(LicenseRepository repository, ServiceConfig serviceConfig,
                           OrganizationDiscoveryClient discoveryClient, OrganizationRestClient restClient,
-                          OrganizationFeignClient feignClient, OrganizationAuthClient authClient) {
+                          OrganizationFeignClient feignClient, OrganizationAuthClient authClient, OrganizationRedisClient redisClient) {
         this.licenseRepository = repository;
         this.serviceConfig = serviceConfig;
         this.discoveryClient = discoveryClient;
         this.restClient = restClient;
         this.feignClient = feignClient;
         this.oauthClient = authClient;
+        this.redisClient = redisClient;
     }
 
     public License getLicense(String organizationId, String licenseId, String clientType) {
@@ -72,6 +75,8 @@ public class LicenseService {
         }
         else if ("oauth".equals(clientType)) {
             return this.oauthClient.getOrganization(organizationId);
+        } else if ("redis".equals(clientType)) {
+            return this.redisClient.getOrganization(organizationId);
         } else {
             return new Organization();
         }
@@ -82,6 +87,8 @@ public class LicenseService {
         return license.withComment(serviceConfig.getJwtSigningKey());
     }
 
+    // 隔离了线程池等资源——舱壁模式
+    // 提供了backup方法——后备模式，所谓的后备，可能是服务降级，可能是另外一套实现
     @HystrixCommand(threadPoolKey = "xxxKey", threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "30"),
             @HystrixProperty(name = "maxQueueSize", value = "10")}, fallbackMethod = "buildFallbackLicenseList",
             commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "12000"),
