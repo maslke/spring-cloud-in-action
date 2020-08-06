@@ -1,5 +1,6 @@
 package com.maslke.spring.demos.licensingservice;
 
+import brave.sampler.Sampler;
 import com.maslke.spring.demos.licensingservice.config.ServiceConfig;
 import com.maslke.spring.demos.licensingservice.event.InOrgChangeSource;
 import com.maslke.spring.demos.licensingservice.model.OrganizationChangeModel;
@@ -61,6 +62,7 @@ public class Application implements ApplicationRunner, CommandLineRunner {
         restTemplate.getInterceptors().add(new UserContextInterceptor());
         return restTemplate;
     }
+
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
