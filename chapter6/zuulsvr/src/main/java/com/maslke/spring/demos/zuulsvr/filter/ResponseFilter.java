@@ -1,5 +1,6 @@
 package com.maslke.spring.demos.zuulsvr.filter;
 
+import brave.Tracer;
 import com.maslke.spring.demos.zuulsvr.util.FilterUtils;
 import com.maslke.spring.demos.zuulsvr.util.UserContext;
 import com.netflix.zuul.ZuulFilter;
@@ -19,17 +20,20 @@ public class ResponseFilter extends ZuulFilter {
     private static final Logger logger = LoggerFactory.getLogger(ResponseFilter.class);
 
     private FilterUtils filterUtils;
+    private Tracer tracer;
 
     @Autowired
-    public ResponseFilter(FilterUtils filterUtils) {
+    public ResponseFilter(FilterUtils filterUtils, Tracer tracer) {
         this.filterUtils = filterUtils;
+        this.tracer = tracer;
     }
 
     @Override
     public Object run() throws ZuulException {
         RequestContext requestContext = RequestContext.getCurrentContext();
         logger.info("Adding the correlation id to the response headers. {}", filterUtils.getCorrelationId());
-        requestContext.getResponse().addHeader(UserContext.CORRELATION_ID, filterUtils.getCorrelationId());
+//        requestContext.getResponse().addHeader(UserContext.CORRELATION_ID, filterUtils.getCorrelationId());
+        requestContext.getResponse().addHeader(UserContext.CORRELATION_ID, tracer.currentSpan().context().traceIdString());
         logger.info("Completing outgoing request for {}.", requestContext.getRequest().getRequestURI());
         return null;
     }
